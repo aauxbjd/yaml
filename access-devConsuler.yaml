@@ -1,0 +1,41 @@
+
+# consumer onboarding
+resources:
+  - name: endpointName1
+    path: "{var1}/abc/{var2}"
+    GET:
+      scopes:
+        - name: read
+          clients:
+            - ISMIAAAPAS_CentralizedAPIAuthorizationService_CC_SI
+            - SomeClient1
+      groups:
+        - AD1
+        - AD2
+    POST:
+      scopes:
+        - name: read
+          clients:
+            - SomeClient2
+            - SomeClient3
+        - name: write
+          clients:
+            - SomeClient3
+            - SomeClient5
+  - name: endpointName2
+    path: "abc/def"
+    PUT:
+      scopes:
+        - name: write
+          clients:
+            - ISMIAAAPAS_CentralizedAPIAuthorizationService_CC_SI
+            - SomeClient1
+      groups:
+        - AD1
+        - AD3
+    GET:
+      scopes:
+        - name: read
+          clients:
+            - SomeClient6
+            - SomeClient7

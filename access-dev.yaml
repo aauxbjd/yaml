@@ -1,0 +1,65 @@
+# access.yaml
+---
+# producer onboarding
+
+# apiUuid: { only used in si and prod access yaml. get this from metadata of processed dev yaml in s3 }
+blockCode: "ABCDEZZZZB"
+description: "Description"
+name: "566zzzzb-api"
+accountId: "820808134307"
+apiGatewayIds:
+  - "zzzzz11566"
+  - "zzzzz11567"
+lifecycle: "dev"
+schemaUrl: "https://swaggerhub.delta.com/v1/apis/CCOE/api-catalog_test_api/1.0.0"
+system: "strng"
+version: "1"
+ownerId: "0801521366"
+producerEmail: "produceremail"
+gitlabLink: "gitlablink"
+links:
+  - url: "https://www.delta.com/"
+    title: "team postman test"
+  - url: "https://www.delta.com/"
+    title: "team postman test2"
+
+# consumer onboarding
+resources:
+  - name: endpointName1
+    path: "{var1}/abc/{var2}"
+    GET:
+      scopes:
+        - name: read
+          clients:
+            - ISMIAAAPAS_CentralizedAPIAuthorizationService_CC_SI
+            - SomeClient1
+      groups:
+        - AD1
+        - AD2
+    POST:
+      scopes:
+        - name: read
+          clients:
+            - SomeClient2
+            - SomeClient3
+        - name: write
+          clients:
+            - SomeClient3
+            - SomeClient5
+  - name: endpointName2
+    path: "abc/def"
+    PUT:
+      scopes:
+        - name: write
+          clients:
+            - ISMIAAAPAS_CentralizedAPIAuthorizationService_CC_SI
+            - SomeClient1
+      groups:
+        - AD1
+        - AD3
+    GET:
+      scopes:
+        - name: read
+          clients:
+            - SomeClient6
+            - SomeClient7
