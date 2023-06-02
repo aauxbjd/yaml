@@ -21,12 +21,14 @@ function App() {
     gitlabLink: '',
     links: [],
     resources: [],  // add this line
-});
+  });
+  const [selectedFileName, setSelectedFileName] = useState('');
 
 
 
 
-const [orderedFormValues, setOrderedFormValues] = useState({});
+
+  const [orderedFormValues, setOrderedFormValues] = useState({});
 
   useEffect(() => {
     const orderedData = {
@@ -70,10 +72,12 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
     if (!data.links) {
       data.links = [];
     }
-  
+
     setFile(file);
     setYamlData(data);
+    setSelectedFileName(file.name); // Set the selected file name
   };
+
 
   const handleChange = (event) => {
     setFormValues({
@@ -102,7 +106,7 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
 
   const addField = (field) => {
     let newArr = [...formValues[field]];
-    newArr.push(field === 'links' ? {url: '', title: ''} : '');
+    newArr.push(field === 'links' ? { url: '', title: '' } : '');
     setFormValues({
       ...formValues,
       [field]: newArr,
@@ -135,18 +139,22 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
       links: formValues.links,
       resources: formValues.resources,  // make sure to include this in your initial state
     };
-  
+
     const filename = 'updated_' + file.name;
     downloadFile(YAML.dump(orderedData, { 'styles': { '!!str': 'double' } }), filename, 'text/yaml');
   };
-  
+
 
   return (
     <div className="App">
-      <h1>YAML Editor</h1>
+      <div>
+        <h1>YAML Editor</h1>
+      </div>
       <div className="editor-container">
         <div className="inputs-container">
-          <input type="file" accept=".yaml" onChange={handleFileUpload} />
+          <input type="file" accept=".yaml" onChange={handleFileUpload}  style={{padding:20}}/>
+          {selectedFileName && <span>{selectedFileName}</span>}
+
           <form className="form">
             <label>
               Block Code:
@@ -250,14 +258,20 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
             <label>
               API Gateway IDs:
               {formValues.apiGatewayIds.map((id, index) => (
-                <div key={index}>
+                <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                   <input
                     type="text"
                     name={`apiGatewayId-${index}`}
                     value={id}
                     onChange={(event) => handleArrayChange(event, index, 'apiGatewayIds')}
                   />
-                  <button type="button" onClick={() => removeField(index, 'apiGatewayIds')}>-</button>
+                  <button
+                    type="button"
+                    onClick={() => removeField(index, 'apiGatewayIds')}
+                    style={{ marginLeft: '10px' }}
+                  >
+                    -
+                  </button>
                 </div>
               ))}
             </label>
@@ -265,7 +279,7 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
             <label>
               Links:
               {formValues.links.map((link, index) => (
-                <div key={index}>
+                <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                   <input
                     type="text"
                     name={`linkUrl-${index}`}
@@ -280,7 +294,7 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
                     placeholder="Title"
                     onChange={(event) => handleLinkChange(event, index, 'title')}
                   />
-                  <button type="button" onClick={() => removeField(index, 'links')}>-</button>
+                  <button type="button" onClick={() => removeField(index, 'links')} style={{ marginLeft: '10px' }}>-</button>
                 </div>
               ))}
             </label>
@@ -289,7 +303,7 @@ const [orderedFormValues, setOrderedFormValues] = useState({});
           <button onClick={handleFileDownload}>Download Updated YAML</button>
         </div>
         <div className="yaml-viewer">
-         <textarea className="editor__textarea" value={YAML.dump(orderedFormValues, { 'styles': { '!!str': 'double' } })} readOnly />
+          <textarea className="editor__textarea" value={YAML.dump(orderedFormValues, { 'styles': { '!!str': 'double' } })} readOnly />
 
         </div>
       </div>
